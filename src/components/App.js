@@ -11,6 +11,7 @@ class App extends React.Component {
         deals: [],
         dealsFromSearch: [],
         currentDealId: null,
+        activeSearchTerm: '',
     }
     async componentDidMount() {
         const deals = await ajax.fetchInitialDeals();
@@ -21,7 +22,7 @@ class App extends React.Component {
         if (searchTerm) {
             dealsFromSearch = await ajax.fetchDealsSearchResults(searchTerm);
         }
-        this.setState({ dealsFromSearch });
+        this.setState({ dealsFromSearch, activeSearchTerm: searchTerm });
     };    
     setCurrentDeal = (dealId) => {
         this.setState({
@@ -54,7 +55,10 @@ class App extends React.Component {
         if(dealsToDisplay.length > 0) {
             return (
                 <View style={styles.main}>
-                    <SearchBar searchDeals={this.searchDeals} />
+                    <SearchBar 
+                        searchDeals={this.searchDeals} 
+                        initialSearchTerm={this.state.activeSearchTerm} 
+                    />
                     <DealList deals={this.state.deals} onItemPress={this.setCurrentDeal} />
                 </View>
             );    

@@ -1,6 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import { View, Text, Image, Button, TouchableOpacity, PanResponder, Animated, Dimensions, Linking, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, Image, Button, TouchableOpacity, PanResponder, Animated, Dimensions, Linking, StyleSheet } from 'react-native';
 
 import { priceDisplay } from '../util';
 import ajax from '../ajax';
@@ -74,23 +74,27 @@ class DealDetail extends React.Component {
                     source={{ uri: deal.media[this.state.imageIndex] }} 
                     style={[{ left: this.imageXPos }, styles.image]} 
                 />
-                <View style={styles.info}>
-                    <Text style={styles.title}>{deal.title}</Text>
-                    <View style={styles.footer}>
-                        <Text style={styles.cause}>{deal.cause.name}</Text>
-                        <Text style={styles.price}>{priceDisplay(deal.price)}</Text>
-                    </View>    
-                </View>
-                { deal.user && (
-                    <View>
-                        <Image source={{ uri: deal.user.avatar }} style={styles.avatar} />
-                        <Text>{deal.user.name}</Text>
-                    </View> 
-                )}
                 <View>
-                    <Text>{deal.description}</Text>
-                </View>
-                <Button title="Buy this deal!" onPress={this.openDealUrl()} />
+                    <Text style={styles.title}>{deal.title}</Text>
+                </View>    
+                <ScrollView style={styles.detail}>
+                    <View style={styles.footer}>
+                        <View style={styles.info}>
+                            <Text style={styles.cause}>{deal.cause.name}</Text>
+                            <Text style={styles.price}>{priceDisplay(deal.price)}</Text> 
+                        </View>
+                        { deal.user && (
+                            <View>
+                                <Image source={{ uri: deal.user.avatar }} style={styles.avatar} />
+                                <Text>{deal.user.name}</Text>
+                            </View> 
+                        )}
+                    </View>    
+                    <View style={styles.description}>
+                        <Text>{deal.description}</Text>
+                    </View>
+                    <Button title="Buy this deal!" onPress={this.openDealUrl()} />
+                </ScrollView>
             </View>
         );
     }
@@ -98,7 +102,7 @@ class DealDetail extends React.Component {
 
 const styles = StyleSheet.create({
     deal: {
-        marginHorizontal: 12,
+        marginBottom: 20,
     },
     backLink: {
         marginBottom: 5,
